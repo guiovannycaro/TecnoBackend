@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.google.gson.Gson;
+import com.tecno.dominio.modelo.Commic;
 import com.tecno.dominio.modelo.Generos;
 import com.tecno.dominio.modelo.Preferencias;
 import com.tecno.dominio.modelo.Respuesta;
@@ -38,6 +39,88 @@ public class PreferenciasDaoImpl implements PreferenciasDao{
 			dato.setGen_descripcion(resulSelect.getString("descripcion"));
 			dato.setGen_imagen(resulSelect.getString("imagen"));
 			dato.setGen_estado(Boolean.parseBoolean(resulSelect.getString("is_activo")));
+			list.add(dato);
+		}
+		return list;
+	}
+	
+	@Override
+	public List<Generos> devolverGenPrefUsuario(int id) throws Exception {
+		ArrayList<Generos> list = new ArrayList<>();
+		
+		
+		String sql = " SELECT" 
+		          + " genero.idgenero,"
+	              + " genero.nombre,"
+	              + " genero.descripcion,"
+	              + " genero.imagen,"
+	              + " genero.is_activo"
+	              + " FROM preferencias"
+	              + " JOIN genero ON preferencias.idgenero = genero.idgenero"
+	              + " JOIN persona ON preferencias.idpersona = persona.idpersona"
+	              + " JOIN usuario ON usuario.idpersona = persona.idpersona"  
+	              + " JOIN genero_commic ON genero.idgenero = genero_commic.idgenero"
+	              + " WHERE usuario.idusuario = "+id+""
+	              + " GROUP BY genero.idgenero, genero.nombre, genero.descripcion, genero.imagen,"
+	              + " genero.is_activo";
+		
+		
+		resulSelect = query.executeSelectBd(sql);
+		while (resulSelect.next()) {
+			Generos dato = new Generos();
+			dato.setGen_Id(resulSelect.getInt("idgenero"));
+			dato.setGen_nombre(resulSelect.getString("nombre"));
+			dato.setGen_descripcion(resulSelect.getString("descripcion"));
+			dato.setGen_imagen(resulSelect.getString("imagen"));
+			dato.setGen_estado(Boolean.parseBoolean(resulSelect.getString("is_activo")));
+			list.add(dato);
+		}
+		return list;
+	}
+
+	@Override
+	public List<Commic> devolverComicPrefUsuario(int id) throws Exception {
+		ArrayList<Commic> list = new ArrayList<>();
+		
+		String sql = " SELECT" 
+            + " commic.nombre,"
+            + " commic.fechapublic,"
+			+ " commic.escritor,"
+			+ " commic.dibujante,"
+			+ " commic.artportada,"
+			+ " commic.descripcion,"
+			+ " commic.imagen,"
+			+ " commic.is_activo"
+			+ " FROM preferencias"
+			+ " JOIN genero ON preferencias.idgenero = genero.idgenero"
+			+ " join commic on preferencias.idcommic = commic.idcommic"
+			+ " JOIN persona ON preferencias.idpersona = persona.idpersona"
+			+ " JOIN usuario ON usuario.idpersona = persona.idpersona " 
+			+ " JOIN genero_commic ON genero.idgenero = genero_commic.idgenero"
+			+ " WHERE genero.idgenero= "+id+""
+			+ " GROUP BY "
+			+ " commic.nombre,"
+	        + " commic.fechapublic,"
+		    + " commic.escritor,"
+			+ " commic.dibujante,"
+			+ " commic.artportada,"
+			+ " commic.descripcion,"
+			+ " commic.imagen,"
+			+ " commic.is_activo";
+		
+		
+		resulSelect = query.executeSelectBd(sql);
+		while (resulSelect.next()) {
+			Commic dato = new Commic();
+			dato.setCom_id(resulSelect.getInt("idcommic"));
+			dato.setCom_nombre(resulSelect.getString("nombre"));
+			dato.setCom_fechaPublicacion(resulSelect.getString("fechapublic"));
+			dato.setCom_escritor(resulSelect.getString("escritor"));
+			dato.setCom_dibujante(resulSelect.getString("dibujante"));
+			dato.setCom_artportada(resulSelect.getString("artportada"));
+			dato.setCom_descripcion(resulSelect.getString("descripcion"));
+			dato.setCom_imagen(resulSelect.getString("imagen"));
+			dato.setCom_estado(Boolean.parseBoolean(resulSelect.getString("is_activo")));
 			list.add(dato);
 		}
 		return list;

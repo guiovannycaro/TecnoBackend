@@ -15,8 +15,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.tecno.aplicacion.dao.impl.PreferenciasDaoImpl;
+import com.tecno.dominio.modelo.Commic;
 import com.tecno.dominio.modelo.Generos;
 import com.tecno.dominio.modelo.Preferencias;
+import com.tecno.dominio.modelo.Usuarios;
 import com.tecno.infraestructura.util.ExceptionUtil;
 
 import io.swagger.annotations.Api;
@@ -45,6 +47,54 @@ public class PreferenciasController {
 			return Collections.emptyList();
 		}
 	}
+	
+	
+	@GetMapping(value = "/DevolverGenPrefUsuario", produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiOperation(value = "Lista de registros por Id ", response = Usuarios.class, notes = "listar")
+	@ApiResponses({ @ApiResponse(code = 200, message = "Se lista de manera correcta", response = Usuarios.class),
+			@ApiResponse(code = 400, message = "Bad Request.El  registro Esta Mal Digitado(String)", response = Usuarios.class),
+			@ApiResponse(code = 500, message = "Error del sistema inesperado", response = Usuarios.class),
+			@ApiResponse(code = 403, message = "Acceso denegado", response = Usuarios.class),
+			@ApiResponse(code = 401, message = "No existen Datos Asociados a Ese registro", response = Usuarios.class),
+			@ApiResponse(code = 404, message = "No existen Datos Asociados a Ese registro", response = Usuarios.class), })
+	@ApiImplicitParams({
+			@ApiImplicitParam(name = "Usuarios", required = true, paramType = "query", dataType = "Object", value = "Objeto") })
+	public List<Generos> DevolverGenPrefUsuario(
+			@ApiParam(name = "Usuarios", value = "Recibe el parametro", required = true) @RequestParam Integer id) {
+	
+		try {
+
+			return servicio.devolverGenPrefUsuario(id);
+		} catch (Exception e) {
+			log.error(ExceptionUtil.format(e));
+			return Collections.emptyList();
+		}
+	}
+	
+	
+	
+	@GetMapping(value = "/DevolGenComicPrefUsuario", produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiOperation(value = "Lista de registros por Id ", response = Commic.class, notes = "listar")
+	@ApiResponses({ @ApiResponse(code = 200, message = "Se lista de manera correcta", response = Commic.class),
+			@ApiResponse(code = 400, message = "Bad Request.El  registro Esta Mal Digitado(String)", response = Commic.class),
+			@ApiResponse(code = 500, message = "Error del sistema inesperado", response = Commic.class),
+			@ApiResponse(code = 403, message = "Acceso denegado", response = Commic.class),
+			@ApiResponse(code = 401, message = "No existen Datos Asociados a Ese registro", response = Commic.class),
+			@ApiResponse(code = 404, message = "No existen Datos Asociados a Ese registro", response = Commic.class), })
+	@ApiImplicitParams({
+			@ApiImplicitParam(name = "Commic", required = true, paramType = "query", dataType = "Object", value = "Objeto") })
+	public List<Commic> DevoComicPrefUsuario(
+			@ApiParam(name = "Commic", value = "Recibe el parametro", required = true) @RequestParam Integer id) {
+	
+		try {
+
+			return servicio.devolverComicPrefUsuario(id);
+		} catch (Exception e) {
+			log.error(ExceptionUtil.format(e));
+			return Collections.emptyList();
+		}
+	}
+	
 
 	@GetMapping(value = "/ListarPreferenciasById", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiOperation(value = "Lista de registros por Id ", response = Preferencias.class, notes = "listar")
