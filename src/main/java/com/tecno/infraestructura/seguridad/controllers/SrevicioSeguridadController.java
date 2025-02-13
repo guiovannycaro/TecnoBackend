@@ -72,14 +72,17 @@ public class SrevicioSeguridadController {
 			@ApiResponse(code = 404, message = "No existen Datos Asociados a Ese registro", response = Perfil.class), })
 	@ApiImplicitParams({
 			@ApiImplicitParam(name = "Perfil", required = true, paramType = "query", dataType = "Object", value = "Objeto") })
-	public List<Perfil> getPerfil(
-			@ApiParam(name = "Perfil", value = "Recibe el parametro", required = true) @RequestParam String d) {
+	public String getPerfil(
+			
+			@ApiParam(name = "Perfil", value = "Recibe el parametro", required = true) @RequestParam String datos) {
+		String mensaje;
 		try {
-
-			return  servicio.getRoles(d);
+			
+			mensaje = servicio.getRoles(datos);
 		} catch (Exception e) {
-			return Collections.emptyList();
+			mensaje = "{\"codigo\":\"500\",\"mensaje\":\"Mensaje Informativo\",\"descripcion\":\"no fue se encontrario registros asociados \"}";
 		}
+		return mensaje;
 	}
 	@CrossOrigin(origins = {"http://localhost:4200/"} )
 	@GetMapping(value = "/ObtNombreUsuario", produces = MediaType.APPLICATION_JSON_VALUE)

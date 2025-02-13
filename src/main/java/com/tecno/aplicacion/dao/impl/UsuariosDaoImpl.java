@@ -8,6 +8,7 @@ import java.util.List;
 
 import com.google.gson.Gson;
 import com.tecno.dominio.modelo.Respuesta;
+import com.tecno.dominio.modelo.UsuarioPerfil;
 import com.tecno.dominio.modelo.Usuarios;
 import com.tecno.infraestructura.interfases.UsuariosDao;
 import com.tecno.infraestructura.util.executeQueryBD;
@@ -53,6 +54,32 @@ public class UsuariosDaoImpl implements UsuariosDao {
 		}
 
 		return usu;
+	}
+	
+	@Override
+	public List<UsuarioPerfil> obtUsuarioPerfil(String datos)  throws Exception
+	{
+		ArrayList<UsuarioPerfil> list = new ArrayList<>();
+		String sql =" select perfil.descripcion as perfil,usuario.username as usuario"
+		+" from perfil_usuario"
+		+" join usuario on perfil_usuario.idusuario = usuario.idusuario"
+		+" join perfil on perfil_usuario.idperfil = perfil.idperfil"
+		+" where usuario.username = '" + datos + "' and perfil.is_activo = true";
+		
+		System.err.println(sql);
+		resulSelect = query.executeSelectBd(sql);
+
+		UsuarioPerfil usu = new UsuarioPerfil();
+		while (resulSelect.next()) {
+
+			usu.setUsuario(resulSelect.getString("usuario"));
+			usu.setPerfil(resulSelect.getString("perfil"));
+			list.add(usu);
+		}
+
+		return list;
+		
+		
 	}
 
 	@Override

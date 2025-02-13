@@ -40,19 +40,22 @@ public class ServicioSeguridadImpl implements ServicioSeguridadDao {
 	
 	
 	@Override
-	public List<Perfil> getRoles(String datos)  throws Exception{
-		ArrayList<Perfil> list = new ArrayList<>();
-		String sql = " select perfil.idperfil as perfil from perfil_usuario "
-				+ " join perfil on perfil_usuario.idperfil  = perfil.idperfil"
+	public String getRoles(String datos)  throws Exception{
+		String perfil="";
+		String sql = " select perfil.idperfil as perfil "
+				+ " from perfil_usuario"
 				+ " join usuario on perfil_usuario.idusuario = usuario.idusuario"
-				+ " where usuario.username = '"+datos+"'";
+		+ " join perfil on perfil_usuario.idperfil = perfil.idperfil"
+		+ " where usuario.username = '"+datos+"' and perfil.is_activo = true";
+		
+		System.out.println(sql);
 		resulSelect = query.executeSelectBd(sql);
 		while (resulSelect.next()) {
-		Perfil perfil = new Perfil();
-		perfil.setPer_id(resulSelect.getInt("perfil"));;
-		list.add(perfil);
+	
+		perfil = ""+resulSelect.getInt("perfil");
+		
 		}
-		return list;
+		return perfil;
 	}
 
 	@Override

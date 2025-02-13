@@ -4,6 +4,7 @@ package com.tecno.infraestructura.interfases;
 import java.util.List;
 import java.util.Optional;
 
+import com.tecno.dominio.modelo.UsuarioPerfil;
 import com.tecno.dominio.modelo.Usuarios;
 
 public interface UsuariosDao {
@@ -16,6 +17,7 @@ public interface UsuariosDao {
 	 public String eliminarRegistro(int id) throws Exception;
 	 
 	 public Usuarios buscarRegistroNombre(Usuarios datos) throws Exception;
+	 public List<UsuarioPerfil> obtUsuarioPerfil(String datos)  throws Exception;
 	 
 
 }

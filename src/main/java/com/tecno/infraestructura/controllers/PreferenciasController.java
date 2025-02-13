@@ -49,7 +49,7 @@ public class PreferenciasController {
 	}
 	
 	
-	@GetMapping(value = "/DevolverGenPrefUsuario", produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value = "/DevolGenPrefUsuario", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiOperation(value = "Lista de registros por Id ", response = Usuarios.class, notes = "listar")
 	@ApiResponses({ @ApiResponse(code = 200, message = "Se lista de manera correcta", response = Usuarios.class),
 			@ApiResponse(code = 400, message = "Bad Request.El  registro Esta Mal Digitado(String)", response = Usuarios.class),

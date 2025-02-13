@@ -10,7 +10,7 @@ public interface ServicioSeguridadDao {
 
 	 public boolean autenticacion(Usuarios datos) throws Exception;
 
-	public List<Perfil> getRoles(String datos)  throws Exception;
+	public String getRoles(String datos)  throws Exception;
 	
 	 public Persona getUserName(Usuarios datos) throws Exception;
 

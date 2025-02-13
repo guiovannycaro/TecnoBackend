@@ -2,6 +2,7 @@ package com.tecno.infraestructura.controllers;
 
 import java.util.List;
 import com.tecno.aplicacion.dao.impl.UsuariosDaoImpl;
+import com.tecno.dominio.modelo.UsuarioPerfil;
 import com.tecno.dominio.modelo.Usuarios;
 import java.util.Collections;
 
@@ -64,6 +65,30 @@ public class UsuariosController {
 		} catch (Exception e) {
 			log.error(ExceptionUtil.format(e));
 			return u;
+		}
+	}
+	
+	
+	@GetMapping(value = "/ObtUsuarioPerfil", produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiOperation(value = "Lista de Usuarios por Id ", response = Usuarios.class, notes = "Crea un nuevo telefono")
+	@ApiResponses({ @ApiResponse(code = 200, message = "Se crea  de manera correcta", response = Usuarios.class),
+			@ApiResponse(code = 400, message = "Bad Request.El Usuarios Ingresado Esta Mal Digitado(String)", response = Usuarios.class),
+			@ApiResponse(code = 500, message = "Error del sistema inesperado", response = Usuarios.class),
+			@ApiResponse(code = 403, message = "Acceso denegado", response = Usuarios.class),
+			@ApiResponse(code = 401, message = "No existen Datos Asociados a Ese Usuarios", response = Usuarios.class),
+			@ApiResponse(code = 404, message = "No existen Datos Asociados a Ese Usuarios", response = Usuarios.class), })
+	@ApiImplicitParams({
+			@ApiImplicitParam(name = "Usuarios", required = true, paramType = "query", dataType = "Object", value = "Ojeto Usuarios", defaultValue = "{\r\n"
+					+ "\"\"id\":xxx\r\n" + "}"), })
+	public List<UsuarioPerfil> obtUsuarioPerfil(
+			@ApiParam(name = "Usuarios", value = "Recibe el objeto Usuarios", required = true) @RequestParam String datos) {
+		UsuarioPerfil u = new UsuarioPerfil();
+		try {
+
+			return  servicio.obtUsuarioPerfil(datos);
+		} catch (Exception e) {
+			log.error(ExceptionUtil.format(e));
+			return Collections.emptyList();
 		}
 	}
 
