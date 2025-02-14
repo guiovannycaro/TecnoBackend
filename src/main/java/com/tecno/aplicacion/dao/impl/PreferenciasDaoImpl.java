@@ -45,7 +45,7 @@ public class PreferenciasDaoImpl implements PreferenciasDao{
 	}
 	
 	@Override
-	public List<Generos> devolverGenPrefUsuario(int id) throws Exception {
+	public List<Generos> devolverGenPrefUsuario(String dato) throws Exception {
 		ArrayList<Generos> list = new ArrayList<>();
 		
 		
@@ -60,54 +60,45 @@ public class PreferenciasDaoImpl implements PreferenciasDao{
 	              + " JOIN persona ON preferencias.idpersona = persona.idpersona"
 	              + " JOIN usuario ON usuario.idpersona = persona.idpersona"  
 	              + " JOIN genero_commic ON genero.idgenero = genero_commic.idgenero"
-	              + " WHERE usuario.idusuario = "+id+""
+	              + " WHERE usuario.username = '"+dato+"'"
 	              + " GROUP BY genero.idgenero, genero.nombre, genero.descripcion, genero.imagen,"
 	              + " genero.is_activo";
 		
 		
 		resulSelect = query.executeSelectBd(sql);
 		while (resulSelect.next()) {
-			Generos dato = new Generos();
-			dato.setGen_Id(resulSelect.getInt("idgenero"));
-			dato.setGen_nombre(resulSelect.getString("nombre"));
-			dato.setGen_descripcion(resulSelect.getString("descripcion"));
-			dato.setGen_imagen(resulSelect.getString("imagen"));
-			dato.setGen_estado(Boolean.parseBoolean(resulSelect.getString("is_activo")));
-			list.add(dato);
+			Generos datos = new Generos();
+			datos.setGen_Id(resulSelect.getInt("idgenero"));
+			datos.setGen_nombre(resulSelect.getString("nombre"));
+			datos.setGen_descripcion(resulSelect.getString("descripcion"));
+			datos.setGen_imagen(resulSelect.getString("imagen"));
+			datos.setGen_estado(Boolean.parseBoolean(resulSelect.getString("is_activo")));
+			list.add(datos);
 		}
 		return list;
 	}
 
 	@Override
-	public List<Commic> devolverComicPrefUsuario(int id) throws Exception {
+	public List<Commic> devolverComicPrefUsuario(int id,String usuario) throws Exception {
 		ArrayList<Commic> list = new ArrayList<>();
+	
 		
-		String sql = " SELECT" 
-            + " commic.nombre,"
-            + " commic.fechapublic,"
-			+ " commic.escritor,"
-			+ " commic.dibujante,"
-			+ " commic.artportada,"
-			+ " commic.descripcion,"
-			+ " commic.imagen,"
-			+ " commic.is_activo"
-			+ " FROM preferencias"
-			+ " JOIN genero ON preferencias.idgenero = genero.idgenero"
-			+ " join commic on preferencias.idcommic = commic.idcommic"
-			+ " JOIN persona ON preferencias.idpersona = persona.idpersona"
-			+ " JOIN usuario ON usuario.idpersona = persona.idpersona " 
-			+ " JOIN genero_commic ON genero.idgenero = genero_commic.idgenero"
-			+ " WHERE genero.idgenero= "+id+""
-			+ " GROUP BY "
-			+ " commic.nombre,"
-	        + " commic.fechapublic,"
-		    + " commic.escritor,"
-			+ " commic.dibujante,"
-			+ " commic.artportada,"
-			+ " commic.descripcion,"
-			+ " commic.imagen,"
-			+ " commic.is_activo";
-		
+				
+				String sql = " SELECT  commic.idcommic,commic.nombre, commic.fechapublic, commic.escritor, commic.dibujante, "
+						   + "   commic.artportada, commic.descripcion, commic.imagen, commic.is_activo"
+						   + "   FROM preferencias "
+						   + "  JOIN genero ON preferencias.idgenero = genero.idgenero "
+						   + "  join commic on preferencias.idcommic = commic.idcommic "
+						   + "  JOIN persona ON preferencias.idpersona = persona.idpersona "
+						   + "  JOIN usuario ON usuario.idpersona = persona.idpersona  "
+						   + "  JOIN genero_commic ON genero.idgenero = genero_commic.idgenero "
+						   + "  WHERE genero.idgenero= "+id+" and "
+						   + "  usuario.username = '"+usuario+"'"
+						   + "  GROUP BY   commic.idcommic,commic.nombre, commic.fechapublic, commic.escritor,"
+						   + "  commic.dibujante, commic.artportada, commic.descripcion, commic.imagen, commic.is_activo";
+				
+				
+		System.out.println(sql);
 		
 		resulSelect = query.executeSelectBd(sql);
 		while (resulSelect.next()) {

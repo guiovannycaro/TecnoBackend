@@ -16,6 +16,6 @@ public interface PreferenciasDao {
 	 
 	 public Preferencias buscarRegistroNombre(Preferencias datos) throws Exception;
 	 
-	 public List<Generos> devolverGenPrefUsuario(int id) throws Exception ;
-	 public List<Commic> devolverComicPrefUsuario(int id) throws Exception;
+	 public List<Generos> devolverGenPrefUsuario(String dato) throws Exception ;
+	 public List<Commic> devolverComicPrefUsuario(int id,String usuario) throws Exception;
 }

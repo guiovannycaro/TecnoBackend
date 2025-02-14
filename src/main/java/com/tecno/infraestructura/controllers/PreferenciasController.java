@@ -60,11 +60,11 @@ public class PreferenciasController {
 	@ApiImplicitParams({
 			@ApiImplicitParam(name = "Usuarios", required = true, paramType = "query", dataType = "Object", value = "Objeto") })
 	public List<Generos> DevolverGenPrefUsuario(
-			@ApiParam(name = "Usuarios", value = "Recibe el parametro", required = true) @RequestParam Integer id) {
-	
+			@ApiParam(name = "Usuarios", value = "Recibe el parametro", required = true) @RequestParam String datos) {
+		
 		try {
 
-			return servicio.devolverGenPrefUsuario(id);
+			return servicio.devolverGenPrefUsuario(datos);
 		} catch (Exception e) {
 			log.error(ExceptionUtil.format(e));
 			return Collections.emptyList();
@@ -84,11 +84,14 @@ public class PreferenciasController {
 	@ApiImplicitParams({
 			@ApiImplicitParam(name = "Commic", required = true, paramType = "query", dataType = "Object", value = "Objeto") })
 	public List<Commic> DevoComicPrefUsuario(
-			@ApiParam(name = "Commic", value = "Recibe el parametro", required = true) @RequestParam Integer id) {
+			@ApiParam(name = "Genero", value = "Recibe el parametro", required = true) @RequestParam String datos,
+			@ApiParam(name = "Usuario", value = "Recibe el parametro", required = true) @RequestParam String usuario
+			) {
 	
 		try {
+		int dato =	Integer.parseInt(datos);
 
-			return servicio.devolverComicPrefUsuario(id);
+			return servicio.devolverComicPrefUsuario(dato,usuario);
 		} catch (Exception e) {
 			log.error(ExceptionUtil.format(e));
 			return Collections.emptyList();
